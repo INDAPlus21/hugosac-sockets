@@ -1,11 +1,9 @@
 
-import java.io.Serializable;
-
 /**
  *
  * @author Hugo Sacilotto
  */
-public class User implements Comparable<User>, Serializable {
+public class User implements Comparable<User> {
     
     private String username;
     private String password;

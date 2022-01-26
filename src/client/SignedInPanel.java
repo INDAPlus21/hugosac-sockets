@@ -49,7 +49,6 @@ public class SignedInPanel extends JPanel {
         clientLabelMap = new HashMap<>();
         chatsMap = new HashMap<>();
         
-        
         g = new GridBagLayout();
         gbc = new GridBagConstraints();
         
