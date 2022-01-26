@@ -68,8 +68,7 @@ public class SignedInPanel extends JPanel {
         
         add(rightPanel, gbc);
         
-        
-        
+        // Mouse actions
         m = new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -104,8 +103,7 @@ public class SignedInPanel extends JPanel {
                 });
                 
                 revalidate();
-                updateUI();
-               
+                updateUI();  
             }
         };
         
@@ -127,7 +125,6 @@ public class SignedInPanel extends JPanel {
                 }
             }
         };
-        
     }
     
     public void writeMessage(String message) {
@@ -191,19 +188,16 @@ public class SignedInPanel extends JPanel {
         label.setBorder(new EmptyBorder(8, 8, 8, 0));
 
         return label;
-    }
-    
+    } 
 }
 
 
 class ChatsPanel extends JPanel {
 
     public JPanel chatsPanel;
-    private JPanel bottomPanel;
     
     private GridBagLayout g;
     public GridBagConstraints gbc;
-    
     
     public ChatsPanel() {
         setLayout(new BorderLayout());
@@ -223,7 +217,6 @@ class ChatsPanel extends JPanel {
         chatsPanel.setBorder(BorderFactory.createLineBorder(Color.YELLOW, 3));
         
         add(chatsPanel, BorderLayout.NORTH);
-        
     }
     
     public void setUsername(String username) {
@@ -231,7 +224,6 @@ class ChatsPanel extends JPanel {
         namePanel.add(Tools.smallTitle(username));
         add(namePanel, BorderLayout.SOUTH);
     }
-    
 }
 
 
@@ -248,7 +240,6 @@ class Chats extends JPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.ABOVE_BASELINE_LEADING;
         gbc.insets = new Insets(0, 0, 2, 0);
-
     }
 
     public static JLabel label(String s) {
@@ -261,5 +252,4 @@ class Chats extends JPanel {
 
         return label;
     }
-
 }

@@ -10,7 +10,6 @@ public class Message {
     private String userSent;
     private LocalDateTime createdAt; 
     
-    
     public Message(String msg, String userSent) {
         this.message = msg;
         this.userSent = userSent;

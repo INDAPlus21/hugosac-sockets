@@ -1,143 +1,116 @@
 
-import java.awt.Dimension;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.HashMap;
-import java.util.Map.Entry;
-import javax.swing.JFrame;
+import java.util.List;
 
 /**
  *
  * @author Hugo Sacilotto
  */
-public class ChatServer extends JFrame implements Runnable {
+public class ClientManager implements Runnable {
     
-    public static final String DELIMITER = "\u2660";
-    
-    private static int numberOfClients = 0;
-    
-    private ServerSocket serverSocket;
+    // Private variables
+    private Socket clientSocket;
+    private DataInputStream streamIn;
+    private DataOutputStream streamOut;
     private Thread thread;
-    private HashMap<String, ClientManager> clientManagerMap;
-    private HashMap<String, User> userMap;
+    private List<String> chatIDs;
+    private String clientID;
+    private ChatServer chatServer;
     
     /**
      * Constructor
-     * @param port
-     * @throws java.io.IOException
-     * @throws java.lang.ClassNotFoundException 
-     */
-    public ChatServer(int port) throws IOException {
-        super("Chat Server");
-        this.serverSocket = new ServerSocket(port);
-        this.clientManagerMap = new HashMap<>();
-        this.userMap = new HashMap<>();
-        
-        this.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                System.out.println("Server has shut down");
-            }
-        });
-        
-        setPreferredSize(new Dimension(300, 300));
-        pack();
-        setVisible(true);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        
-        
-        this.thread = new Thread(this);
-        System.out.println("Server is running...");
-    }
-    
-    public void newLogin(String msg) throws IOException {
-        //Login♠<clientID>♠<username>♠<password>
-        String[] parts = msg.split(DELIMITER);
-        String clientID = parts[1];
-        String username = parts[2];
-        String password = parts[3];
-        
-        ClientManager cm = clientManagerMap.get(clientID);
-        
-        userMap.put(clientID, new User(username, password));
-        
-        sendNewClientIDToClients(clientID, username, cm);
-    }
-    
-    /**
-     * When a new client joins, its ID is sent to all other clients.
-     * The other client's ID's are sent to the new client as well.
-     * @param clientID
-     * @param newClient
+     * 
+     * @param socket
+     * @param chatServer
      * @throws IOException 
      */
-    private void sendNewClientIDToClients(String clientID, String username, ClientManager newClient) throws IOException {
+    public ClientManager(Socket socket, ChatServer chatServer) throws IOException {
+        this.clientSocket = socket;
+        this.streamIn = new DataInputStream(socket.getInputStream());
+        this.streamOut = new DataOutputStream(socket.getOutputStream());
+        this.chatServer = chatServer;
         
-        for (Entry<String, ClientManager> cm : clientManagerMap.entrySet()) {
-            if (cm.getValue() != newClient) {
-                // Send the new client ID to another client
-                cm.getValue().sendNewClientID(clientID, username);
-                
-                // Send the other client IDs to the new client
-                String currentUsername = userMap.get(cm.getKey()).getUsername();
-                newClient.sendNewClientID(cm.getKey(), currentUsername);   
-            }
-        }
-    }    
+        this.thread = new Thread(this);
+        this.thread.start();
+    }
     
     /**
-     * Selects the appropriate client manager based on ID to send a message
-     * to its client.
+     * Sends a message to the client.
+     * 
+     * @param senderClientID
+     * @param message
+     * @throws IOException 
+     */
+    public void sendMessage(String senderClientID, String message) throws IOException {
+        //Message♠<senderClientID>♠<message>
+        streamOut.writeUTF(
+            "Message"+ChatServer.DELIMITER+
+            senderClientID+ChatServer.DELIMITER+
+            message
+        );
+    }
+    
+    /**
+     * Sends the created ID to the client.
+     * 
+     * @param clientID
+     * @throws IOException 
+     */
+    public void sendID(String clientID) throws IOException {
+        this.clientID = clientID;
+        streamOut.writeUTF("ID"+ChatServer.DELIMITER+clientID);
+    }
+    
+    /**
+     * Sends the client the ID of a newly created client.
+     * @param clientID
+     * @param username
+     * @throws IOException 
+     */
+    public void sendNewClientID(String clientID, String username) throws IOException {
+        streamOut.writeUTF(
+            "OtherClientID"+ChatServer.DELIMITER+
+            clientID+ChatServer.DELIMITER+
+            username
+        );
+    }
+
+    /**
+     * Handles different incoming messages.
+     * 
      * @param msg
      * @throws IOException 
      */
-    public void sendToChat(String msg) throws IOException {     
-        // Message♠<senderID>♠<receiverID>♠<message>
+    public void handleIncomingMessage(String msg) throws IOException {
+        String[] parts = msg.split(ChatServer.DELIMITER);
         
-        String[] parts = msg.split(DELIMITER);
+        String messageType = parts[0];
         
-        String senderClientID = parts[1];
-        String receivingClientID = parts[2];
-        String message = parts[3];
-        
-        ClientManager cm = clientManagerMap.get(receivingClientID);
-        cm.sendMessage(senderClientID, message);
-        
-    }
-    
-    /**
-     * Handles a new client connection.
-     * @param clientSocket
-     * @throws IOException 
-     */
-    private void handleClientSocket(Socket clientSocket) throws IOException {
-        ClientManager cm = new ClientManager(clientSocket, this);
-        clientManagerMap.put(""+numberOfClients, cm);
-        cm.sendID(""+numberOfClients);        
-        numberOfClients++;
-    }
-    
-
-    @Override
-    public void run() {
-        while(!Thread.interrupted()) {
-            try {
-                Socket s = serverSocket.accept();
-                handleClientSocket(s);
-            } catch (IOException e) {}
+        switch(messageType) {
+            case "Message" -> chatServer.sendToChat(msg);
+            case "Login" -> chatServer.newLogin(msg);
         }
     }
     
-    /**
-     * Main method.
-     * @param args
-     * @throws IOException
-     */
-    public static void main(String[] args) throws IOException {
-        ChatServer s = new ChatServer(5000);
-        s.thread.start();
+    
+    @Override
+    public void run() {
+        while (!Thread.interrupted()) {
+            try {
+                String msg = streamIn.readUTF();
+                handleIncomingMessage(msg);
+            } catch(IOException e) {
+                break;
+            }
+        }
+        
+        try {
+            clientSocket.close();
+        } catch(IOException e) {
+            
+        }
     }
 }
