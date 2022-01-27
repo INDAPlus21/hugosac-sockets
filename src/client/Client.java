@@ -100,7 +100,6 @@ public class Client implements Runnable {
         switch (typeOfMessage) {
             case "ID":
                 this.clientID = parts[1];
-                //sendUserInfo(username, password);
                 break;
             case "OtherClientID":
                 String id = parts[1];

@@ -21,8 +21,7 @@ public class ClientManager implements Runnable {
     private ChatServer chatServer;
     
     /**
-     * Constructor
-     * 
+     * Constructor.
      * @param socket
      * @param chatServer
      * @throws IOException 
@@ -39,7 +38,6 @@ public class ClientManager implements Runnable {
     
     /**
      * Sends a message to the client.
-     * 
      * @param senderClientID
      * @param message
      * @throws IOException 
@@ -55,7 +53,6 @@ public class ClientManager implements Runnable {
     
     /**
      * Sends the created ID to the client.
-     * 
      * @param clientID
      * @throws IOException 
      */
@@ -80,7 +77,6 @@ public class ClientManager implements Runnable {
 
     /**
      * Handles different incoming messages.
-     * 
      * @param msg
      * @throws IOException 
      */
@@ -95,7 +91,6 @@ public class ClientManager implements Runnable {
         }
     }
     
-    
     @Override
     public void run() {
         while (!Thread.interrupted()) {
@@ -109,8 +104,6 @@ public class ClientManager implements Runnable {
         
         try {
             clientSocket.close();
-        } catch(IOException e) {
-            
-        }
+        } catch(IOException e) {}
     }
 }

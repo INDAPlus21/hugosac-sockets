@@ -17,10 +17,13 @@ public class ChatServer extends JFrame implements Runnable {
     
     public static final String DELIMITER = "\u2660";
     
+    // Used as client ID
     private static int numberOfClients = 0;
     
     private ServerSocket serverSocket;
     private Thread thread;
+
+    // Hash maps for users
     private HashMap<String, ClientManager> clientManagerMap;
     private HashMap<String, User> userMap;
     
@@ -28,7 +31,6 @@ public class ChatServer extends JFrame implements Runnable {
      * Constructor
      * @param port
      * @throws java.io.IOException
-     * @throws java.lang.ClassNotFoundException 
      */
     public ChatServer(int port) throws IOException {
         super("Chat Server");
@@ -43,12 +45,13 @@ public class ChatServer extends JFrame implements Runnable {
             }
         });
         
+        // Window settings
         setPreferredSize(new Dimension(300, 300));
         pack();
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         
-        
+        // Start server
         this.thread = new Thread(this);
         System.out.println("Server is running...");
     }
@@ -60,10 +63,11 @@ public class ChatServer extends JFrame implements Runnable {
         String username = parts[2];
         String password = parts[3];
         
+        // Add new client to the user hash map
         ClientManager cm = clientManagerMap.get(clientID);
-        
         userMap.put(clientID, new User(username, password));
         
+        // Send the new client's ID to the other clients
         sendNewClientIDToClients(clientID, username, cm);
     }
     
@@ -75,9 +79,9 @@ public class ChatServer extends JFrame implements Runnable {
      * @throws IOException 
      */
     private void sendNewClientIDToClients(String clientID, String username, ClientManager newClient) throws IOException {
-        
+        // Loop through clients
         for (Entry<String, ClientManager> cm : clientManagerMap.entrySet()) {
-            if (cm.getValue() != newClient) {
+            if (cm.getValue() != newClient) { // Don't send to yourself
                 // Send the new client ID to another client
                 cm.getValue().sendNewClientID(clientID, username);
                 
@@ -105,7 +109,6 @@ public class ChatServer extends JFrame implements Runnable {
         
         ClientManager cm = clientManagerMap.get(receivingClientID);
         cm.sendMessage(senderClientID, message);
-        
     }
     
     /**
@@ -120,7 +123,6 @@ public class ChatServer extends JFrame implements Runnable {
         numberOfClients++;
     }
     
-
     @Override
     public void run() {
         while(!Thread.interrupted()) {

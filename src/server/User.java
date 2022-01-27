@@ -4,14 +4,13 @@
  * @author Hugo Sacilotto
  */
 public class User implements Comparable<User> {
-    
+    //Fields
     private String username;
     private String password;
     private String userID;
     
     /**
      * Constructor
-     * 
      * @param username
      * @param password
      */

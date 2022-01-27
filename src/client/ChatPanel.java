@@ -22,17 +22,19 @@ public class ChatPanel extends JPanel {
     
     public static final int RECIEVED = 0, SENT = 1;
     
+    // GUI fields
     private JButton btnSend;
     private JTextField txfMessage;
+    private JPanel scrollingPanel;
     
-    private String chatClientName;
+    // Your chat name
     private String clientName;
     
-    private JPanel scrollingPanel;
+    // The name of the client to chat with
+    private String chatClientName;
     
     /**
      * Constructor
-     * 
      * @param clientName
      * @param chatClientName 
      */
