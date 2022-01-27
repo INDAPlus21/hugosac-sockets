@@ -14,6 +14,9 @@ To login as a client open a new terminal for each client, cd into /src/client an
 javac *.java
 java MainWindow
 ```
+Enter a username in the field and start to chat.
+![Sign in window](/images/sign-in.png)
 
 ## Start Chatting
-In the left bar you can select who to chat with from all joined clients.
+In the left sidebar you can select who to chat with from all joined clients.
+![Chat window](/images/chat.png)
