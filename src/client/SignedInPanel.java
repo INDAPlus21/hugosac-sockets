@@ -42,6 +42,7 @@ public class SignedInPanel extends JPanel {
     
     private ActionListener sendAction;
     
+    /* Constructor */
     public SignedInPanel() {
         
         chatsPanel = new ChatsPanel();
@@ -139,7 +140,6 @@ public class SignedInPanel extends JPanel {
     
     /**
      * Adds a new client to chat to.
-     * 
      * @param clientID
      * @param clientName 
      */
@@ -163,7 +163,6 @@ public class SignedInPanel extends JPanel {
     
     /**
      * Sets the user to the logged in user.
-     * 
      * @param user 
      */
     public void setUser(User user, Client client) {
@@ -174,7 +173,6 @@ public class SignedInPanel extends JPanel {
  
     /**
      * Returns a styled JLabel which displays the name of a client.
-     * 
      * @param name
      * @return 
      */

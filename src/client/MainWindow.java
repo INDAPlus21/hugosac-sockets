@@ -1,11 +1,8 @@
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -23,6 +20,10 @@ public class MainWindow extends JFrame {
     private Client client;
     private User user;
     
+    /**
+     * Constructor.
+     * @throws IOException
+     */
     public MainWindow() throws IOException {
         super("Chat App");
        
@@ -31,20 +32,17 @@ public class MainWindow extends JFrame {
         setLayout(new FlowLayout(FlowLayout.CENTER, 0, 80));
         
         SignInPanel sip = new SignInPanel();
-        SignUpPanel sup = new SignUpPanel();
         SignedInPanel sdip = new SignedInPanel();
         
         this.client = new Client(5000, sdip);
         
         add(sip);
-        add(sup);
         add(sdip);
-        sup.setVisible(false);
         sdip.setVisible(false);
         
-        getContentPane().setBackground(Tools.DARK_1);
+        getContentPane().setBackground(Tools.DARK_1); 
         
-        ActionListener signInAction = new ActionListener() {
+        sip.setActionListeners(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -58,56 +56,6 @@ public class MainWindow extends JFrame {
                         sdip.setVisible(true);
                     }
                 } catch (IOException ex) {}
-            }
-        };
-        
-        ActionListener signUpAction = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    sup.act(sdip);
-                } catch (IOException ex) {}
-            }   
-        };
-        
-        sip.setActionListeners(signInAction);
-        sup.setActionListeners(signUpAction);
-        
-        sip.getSignUpLabel().addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                sip.getSignUpLabel().setForeground(Tools.MEDIUM_2);
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                sip.getSignUpLabel().setForeground(Color.WHITE);
-            }
-
-            @Override
-            public void mouseClicked(MouseEvent e) {               
-                sip.setVisible(false);
-                sip.clear();
-                sup.setVisible(true);
-            }
-        }); 
-        
-        sup.getSignInLabel().addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                sup.getSignInLabel().setForeground(Tools.MEDIUM_2);
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                sup.getSignInLabel().setForeground(Color.WHITE);
-            }
-
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                sup.setVisible(false);
-                sup.clear();
-                sip.setVisible(true);
             }
         });
         

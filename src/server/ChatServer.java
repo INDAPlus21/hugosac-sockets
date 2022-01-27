@@ -28,8 +28,8 @@ public class ChatServer extends JFrame implements Runnable {
     private HashMap<String, User> userMap;
     
     /**
-     * Constructor
-     * @param port
+     * Constructor.
+     * @param port is the port number
      * @throws java.io.IOException
      */
     public ChatServer(int port) throws IOException {
@@ -57,15 +57,14 @@ public class ChatServer extends JFrame implements Runnable {
     }
     
     public void newLogin(String msg) throws IOException {
-        //Login♠<clientID>♠<username>♠<password>
+        //Login♠<clientID>♠<username>
         String[] parts = msg.split(DELIMITER);
         String clientID = parts[1];
         String username = parts[2];
-        String password = parts[3];
         
         // Add new client to the user hash map
         ClientManager cm = clientManagerMap.get(clientID);
-        userMap.put(clientID, new User(username, password));
+        userMap.put(clientID, new User(username));
         
         // Send the new client's ID to the other clients
         sendNewClientIDToClients(clientID, username, cm);

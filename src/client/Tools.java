@@ -6,13 +6,11 @@ import java.awt.Insets;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 
 /**
  *
- * 
  * @author Hugo Sacilotto
  */
 public class Tools {
@@ -28,20 +26,21 @@ public class Tools {
     public static final Color ERROR    = new Color(182, 0, 0);
     public static final Color INPUT    = DARK_3;
     
+    // Standard input field size
     public static final Dimension INPUT_FIELD_SIZE = new Dimension(300, 38);
+    
+    // Border for input fields
     public static final Border INPUT_FIELD_BORDER = BorderFactory.createCompoundBorder(
             null, BorderFactory.createEmptyBorder(0, 10, 0, 0)
     );
-    
     
     /* Class is not to be instantiated */
     private Tools() { }
     
     /**
      * Returns a styled JLabel in the form of a title.
-     * 
      * @param title
-     * @return 
+     * @return a JLabel
      */
     public static JLabel title(String title) {
         JLabel label = new JLabel(title);
@@ -52,9 +51,8 @@ public class Tools {
     
     /**
      * Returns a styled JLabel in the form of a small title.
-     * 
      * @param title
-     * @return 
+     * @return a JLabel
      */
     public static JLabel smallTitle(String title) {
         JLabel label = new JLabel(title);
@@ -63,11 +61,8 @@ public class Tools {
         return label;
     }
     
-    
     /**
-     * Returns a styled JTextField.
-     * 
-     * @return 
+     * @return a styled JTextField
      */
     public static JTextField inputField() {
         JTextField field = new JTextField();
@@ -82,27 +77,8 @@ public class Tools {
     }
     
     /**
-     * Returns a styled JPasswordField.
-     * 
-     * @return 
-     */
-    public static JPasswordField passwordField() {
-        JPasswordField field = new JPasswordField();
-        field.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
-        field.setCaretColor(Color.WHITE);
-        field.setPreferredSize(INPUT_FIELD_SIZE);
-        field.setBackground(DARK_3);
-        field.setForeground(Color.WHITE);
-        field.setBorder(INPUT_FIELD_BORDER);
-        
-        return field;
-    }
-    
-    /**
-     * Returns a styled JLabel to be a heading for input fields.
-     * 
      * @param text
-     * @return 
+     * @return a styled JLabel to be a heading for input fields
      */
     public static JLabel fieldLabel(String text) {
         JLabel label = new JLabel(text);
@@ -113,9 +89,7 @@ public class Tools {
     }
     
     /**
-     * Returns a styled JLabel in the form of an error message.
-     * 
-     * @return 
+     * @return a styled JLabel in the form of an error message
      */
     public static JLabel errorLabel() {
         JLabel label = new JLabel(" ");
@@ -126,10 +100,8 @@ public class Tools {
     }
     
     /**
-     * Returns a styled JButton.
-     * 
      * @param text
-     * @return 
+     * @return a styled JButton
      */
     public static JButton button(String text) {
         JButton button = new JButton(text);
@@ -141,6 +113,5 @@ public class Tools {
         
         return button;
     }
-
 }
 

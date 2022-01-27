@@ -23,25 +23,20 @@ public class Client implements Runnable {
     private SignedInPanel signedInPanel;
     
     private String username;
-    private String password;
 
     /**
      * Constructor
-     * 
      * @param port
      * @param signedInPanel
      * @param username
-     * @param password
      * @throws IOException 
      */
-    public Client(int port, SignedInPanel signedInPanel, String username, String password) throws IOException {
+    public Client(int port, SignedInPanel signedInPanel, String username) throws IOException {
         this.socket = new Socket("localhost", port);
         this.streamIn = new DataInputStream(socket.getInputStream());
         this.streamOut = new DataOutputStream(socket.getOutputStream());
         this.signedInPanel = signedInPanel;
-        
         this.username = username;
-        this.password = password;
         
         this.thread = new Thread(this);
         this.thread.start();
@@ -59,23 +54,20 @@ public class Client implements Runnable {
     
     public void login(User user) throws IOException {
         this.username = user.getUsername();
-        this.password = user.getPassword();
-        sendNotifyLogin(username, password);
+        sendNotifyLogin(username);
     }
     
-    private void sendNotifyLogin(String username, String password) throws IOException {
-        //Login♠<clientID>♠<username>♠<password>
+    private void sendNotifyLogin(String username) throws IOException {
+        //Login♠<clientID>♠<username>
         streamOut.writeUTF(
             "Login"+DELIMITER+
             clientID+DELIMITER+
-            username+DELIMITER+
-            password
+            username
         );
     }
     
     /**
      * Sends a message to the client manager.
-     * 
      * @param receiverClientID
      * @param message
      * @throws IOException 
@@ -90,7 +82,6 @@ public class Client implements Runnable {
     
     /**
      * Handles different incoming messages.
-     * 
      * @param msg 
      */
     public void handleIncomingMessage(String msg) throws IOException {
@@ -110,7 +101,6 @@ public class Client implements Runnable {
                 // Received message
                 String senderClientID = parts[1];
                 String message = parts[2];
-                
                 signedInPanel.newMessage(senderClientID, message);
                 break;
         }

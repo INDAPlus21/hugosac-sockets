@@ -6,17 +6,14 @@
 public class User implements Comparable<User> {
     //Fields
     private String username;
-    private String password;
     private String userID;
     
     /**
      * Constructor
      * @param username
-     * @param password
      */
-    public User(String username, String password) {
+    public User(String username) {
         this.username = username;
-        this.password = password;
     }
     
     public String getUserID() {
@@ -25,9 +22,6 @@ public class User implements Comparable<User> {
     public String getUsername() {
         return this.username;
     }
-    public String getPassword() {
-        return this.password;
-    }
     
     public void setUserID(String id) {
         this.userID = id;
@@ -35,17 +29,11 @@ public class User implements Comparable<User> {
     
     @Override
     public String toString() {
-        return username+", "+password;
+        return this.username+", "+"ID: " + this.userID;
     }
     
     @Override
     public int compareTo(User u) {
-        int i = this.username.compareTo(u.username);
-        
-        if (i == 0) {
-            i = this.password.compareTo(u.password);
-        }
-        
-        return i;
+        return this.username.compareTo(u.username);
     }
 }

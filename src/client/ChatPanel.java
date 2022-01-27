@@ -98,7 +98,6 @@ public class ChatPanel extends JPanel {
     
     /**
      * Adds a message to the chat panel.
-     * 
      * @param message
      * @param type 
      */
@@ -118,7 +117,6 @@ public class ChatPanel extends JPanel {
     
     /**
      * Returns a styled JPanel in the form of a message.
-     * 
      * @param textMessage
      * @param sender
      * @param flowAlign
