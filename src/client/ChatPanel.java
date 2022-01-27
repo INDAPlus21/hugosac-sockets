@@ -13,7 +13,6 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 
-
 /**
  *
  * @author Hugo Sacilotto
@@ -123,7 +122,6 @@ public class ChatPanel extends JPanel {
      * @return 
      */
     public JPanel message(String textMessage, String sender, int flowAlign) {
-        int charLimit = 50;
         int width = 250;
 
         String msgString = "<html><body style='width: " + width + "px;'>" + textMessage + "</html>";

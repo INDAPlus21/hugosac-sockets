@@ -26,7 +26,7 @@ import javax.swing.border.EmptyBorder;
 public class SignedInPanel extends JPanel {
     
     private User user;
-    private ChatsPanel chatsPanel;
+    private Sidebar sidebar;
     private Client client;
     
     private String currentChatClientID;
@@ -45,7 +45,7 @@ public class SignedInPanel extends JPanel {
     /* Constructor */
     public SignedInPanel() {
         
-        chatsPanel = new ChatsPanel();
+        sidebar = new Sidebar();
         
         clientLabelMap = new HashMap<>();
         chatsMap = new HashMap<>();
@@ -56,7 +56,7 @@ public class SignedInPanel extends JPanel {
         setLayout(g);
         gbc.weighty = 1;
         gbc.fill = GridBagConstraints.VERTICAL;
-        add(chatsPanel = new ChatsPanel(), gbc);
+        add(sidebar = new Sidebar(), gbc);
         
         gbc.gridx = 1;
         gbc.weightx = 1;
@@ -155,8 +155,8 @@ public class SignedInPanel extends JPanel {
         label.addMouseListener(m);
         clientLabelMap.put(clientID, label);
         
-        chatsPanel.gbc.gridy = clientLabelMap.size() - 1;
-        chatsPanel.chatsPanel.add(label, chatsPanel.gbc);
+        sidebar.gbc.gridy = clientLabelMap.size() - 1;
+        sidebar.nameTag.add(label, sidebar.gbc);
         revalidate();
         updateUI();
     }
@@ -168,7 +168,7 @@ public class SignedInPanel extends JPanel {
     public void setUser(User user, Client client) {
         this.user = user;
         this.client = client;
-        chatsPanel.setUsername(user.getUsername());
+        sidebar.setUsername(user.getUsername());
     }
  
     /**
@@ -189,31 +189,29 @@ public class SignedInPanel extends JPanel {
 }
 
 
-class ChatsPanel extends JPanel {
-
-    public JPanel chatsPanel;
+class Sidebar extends JPanel {
+    public JPanel nameTag;
     
     private GridBagLayout g;
     public GridBagConstraints gbc;
     
-    public ChatsPanel() {
+    public Sidebar() {
         setLayout(new BorderLayout());
         
-        chatsPanel = new Chats();
+        nameTag = new NameTag();
         g = new GridBagLayout();
         gbc = new GridBagConstraints();
-        chatsPanel.setLayout(g);
+        nameTag.setLayout(g);
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.NORTH;
         
         gbc.weightx = 1;
         gbc.insets = new Insets(0, 0, 2, 0);
         
+        nameTag.setBackground(Color.WHITE);
+        //nameTag.setBorder(BorderFactory.createLineBorder(Color.YELLOW, 3));
         
-        chatsPanel.setBackground(Color.BLUE);
-        chatsPanel.setBorder(BorderFactory.createLineBorder(Color.YELLOW, 3));
-        
-        add(chatsPanel, BorderLayout.NORTH);
+        add(nameTag, BorderLayout.NORTH);
     }
     
     public void setUsername(String username) {
@@ -224,15 +222,14 @@ class ChatsPanel extends JPanel {
 }
 
 
-class Chats extends JPanel {
-    
-    public Chats() {
+class NameTag extends JPanel {
+    public NameTag() {
         GridBagLayout g = new GridBagLayout();
         GridBagConstraints gbc = new GridBagConstraints();
 
         setLayout(g);
         setBackground(Color.BLUE);
-        setBorder(BorderFactory.createLineBorder(Color.ORANGE, 5));
+        // setBorder(BorderFactory.createLineBorder(Color.GREEN, 5));
 
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.ABOVE_BASELINE_LEADING;

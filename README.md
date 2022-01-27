@@ -1,5 +1,5 @@
 # hugosac-sockets
-GUI Chat app written in Java. Multiple clients can connect and chat privately with each other.
+GUI Chat app written in Java. Multiple clients can connect and chat individually with each other.
 
 ## Start Server
 First make sure you have Java installed. To run the server cd into /src/server and run
