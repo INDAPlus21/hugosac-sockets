@@ -78,7 +78,7 @@ public class ClientManager implements Runnable {
     /**
      * Handles different incoming messages.
      * @param msg
-     * @throws IOException 
+     * @throws IOException
      */
     public void handleIncomingMessage(String msg) throws IOException {
         String[] parts = msg.split(ChatServer.DELIMITER);

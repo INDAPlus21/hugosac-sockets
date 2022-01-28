@@ -17,6 +17,9 @@ public class ChatServer extends JFrame implements Runnable {
     
     public static final String DELIMITER = "\u2660";
     
+    // Network port
+    private final int PORT = 5000;
+
     // Used as client ID
     private static int numberOfClients = 0;
     
@@ -29,12 +32,11 @@ public class ChatServer extends JFrame implements Runnable {
     
     /**
      * Constructor.
-     * @param port is the port number
      * @throws java.io.IOException
      */
-    public ChatServer(int port) throws IOException {
+    public ChatServer() throws IOException {
         super("Chat Server");
-        this.serverSocket = new ServerSocket(port);
+        this.serverSocket = new ServerSocket(PORT);
         this.clientManagerMap = new HashMap<>();
         this.userMap = new HashMap<>();
         
@@ -65,6 +67,7 @@ public class ChatServer extends JFrame implements Runnable {
         // Add new client to the user hash map
         ClientManager cm = clientManagerMap.get(clientID);
         userMap.put(clientID, new User(username));
+        System.out.println(username+" has joined!");
         
         // Send the new client's ID to the other clients
         sendNewClientIDToClients(clientID, username, cm);
@@ -138,7 +141,7 @@ public class ChatServer extends JFrame implements Runnable {
      * @throws IOException
      */
     public static void main(String[] args) throws IOException {
-        ChatServer s = new ChatServer(5000);
+        ChatServer s = new ChatServer();
         s.thread.start();
     }
 }

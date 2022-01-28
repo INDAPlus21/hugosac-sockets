@@ -50,13 +50,14 @@ public class Client implements Runnable {
         this.thread.start();
     }
     
-    public void login(User user) throws IOException {
+    public void login(User user) throws IOException, InterruptedException {
         this.username = user.getUsername();
         sendNotifyLogin(username);
     }
     
-    private void sendNotifyLogin(String username) throws IOException {
+    private void sendNotifyLogin(String username) throws IOException, InterruptedException {
         //Login♠<clientID>♠<username>
+        Thread.sleep(300);  // Wait to get ClientID from server
         streamOut.writeUTF(
             "Login"+DELIMITER+
             clientID+DELIMITER+
@@ -68,7 +69,7 @@ public class Client implements Runnable {
      * Sends a message to the client manager.
      * @param receiverClientID
      * @param message
-     * @throws IOException 
+     * @throws IOException
      */
     public void sendMessage(String receiverClientID, String message) throws IOException {
         //Message♠<senderID>♠<receiverID>♠<message>

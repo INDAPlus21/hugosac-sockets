@@ -17,8 +17,10 @@ public class MainWindow extends JFrame {
     /* Only used to demonstrate in SignUpPanel */
     public static List<User> users = new LinkedList<User>(); 
     
-    private Client client;
     private User user;
+
+    // Network port
+    private final int PORT = 5000;
     
     /**
      * Constructor.
@@ -34,8 +36,6 @@ public class MainWindow extends JFrame {
         SignInPanel sip = new SignInPanel();
         SignedInPanel sdip = new SignedInPanel();
         
-        this.client = new Client(5000, sdip);
-        
         add(sip);
         add(sdip);
         sdip.setVisible(false);
@@ -48,14 +48,13 @@ public class MainWindow extends JFrame {
                 try {
                     user = sip.act(sdip);
                     if (user != null) {
-                        client.login(user);
-                        sdip.setUser(user, client);
+                        sdip.setUser(user, PORT);
                         
                         // Switch panels
                         sip.setVisible(false);
                         sdip.setVisible(true);
                     }
-                } catch (IOException ex) {}
+                } catch (IOException | InterruptedException ex) {}
             }
         });
         

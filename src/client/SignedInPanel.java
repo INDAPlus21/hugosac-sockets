@@ -14,7 +14,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.util.HashMap;
-import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -163,11 +162,14 @@ public class SignedInPanel extends JPanel {
     
     /**
      * Sets the user to the logged in user.
-     * @param user 
+     * @param user
+     * @throws IOException
+     * @throws InterruptedException
      */
-    public void setUser(User user, Client client) {
+    public void setUser(User user, int port) throws IOException, InterruptedException {
         this.user = user;
-        this.client = client;
+        this.client = new Client(port, this);
+        this.client.login(user);
         sidebar.setUsername(user.getUsername());
     }
  
@@ -209,7 +211,6 @@ class Sidebar extends JPanel {
         gbc.insets = new Insets(0, 0, 2, 0);
         
         nameTag.setBackground(Color.WHITE);
-        //nameTag.setBorder(BorderFactory.createLineBorder(Color.YELLOW, 3));
         
         add(nameTag, BorderLayout.NORTH);
     }
@@ -229,7 +230,6 @@ class NameTag extends JPanel {
 
         setLayout(g);
         setBackground(Color.BLUE);
-        // setBorder(BorderFactory.createLineBorder(Color.GREEN, 5));
 
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.ABOVE_BASELINE_LEADING;
